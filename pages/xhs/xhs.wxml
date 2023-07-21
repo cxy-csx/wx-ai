@@ -1,0 +1,41 @@
+<!--pages/index/component/form/form.wxml-->
+<cu-custom bgColor="bg-gradual-red" isBack="{{true}}">
+  <view slot="content">小红书</view>
+</cu-custom>
+
+<form>
+  
+
+  
+
+
+
+  <view class="cu-bar bg-white margin-top">
+    <view class="action">
+      <text class="cuIcon-titles text-blue"></text>
+      <text class="text-bold">小红书爆款文案</text>
+    </view>
+  </view>
+
+  <view class="cu-form-group margin-top-sm">
+    <textarea maxlength="-1" disabled="{{modalName!=null}}" bindblur="textareaAInput" placeholder="示例: 帮我写一篇洗面奶文案"></textarea>
+  </view>
+
+</form>
+
+<block wx-if="{{content}}">
+
+  <view class="bg-white margin-sm padding-sm radius-lg">
+  <view class="padding  radius" style="width:100%">
+    <text class="text-cut-99" user-select="true">
+      {{content}}
+    </text>
+  </view>
+  <view class="cu-bar btn-group">
+    <button class="cu-btn bg-orange shadow-blur round lg" bindtap="copyText">复制</button>
+  </view>
+</view>
+  
+</block>
+
+
