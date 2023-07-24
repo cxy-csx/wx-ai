@@ -262,7 +262,7 @@ Page({
       method: 'POST',
       header: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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'
+        'Authorization': 'Bearer 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'
       },
       data: {
         "model": "gpt-3.5-turbo",
@@ -308,12 +308,35 @@ Page({
       // let de = decodeURIComponent(escape(en));
 
       // console.log("onChunkReceived", str);
-
+      let content = ''
       console.log(r.data)
       const data16 = that.arrayBufferToHex(r.data)	// ArrayBuffer转16进制
       const requestData = that.hexToString(data16) // 16进制转字符串
-      let content = JSON.parse(requestData.replace("data: ", ''))['choices'][0]['delta']['content'];
-      console.log(content);
+      try {
+        const regex = /{"id.*}]}/g;
+
+        // 匹配所有符合格式的JSON字符串并存储在数组中
+        const matches = requestData.match(regex);
+
+        // 将匹配到的JSON字符串转换为JSON对象，并存储在结果数组中
+        const result = matches.map((match) => JSON.parse(match));
+        console.log("result=============")
+        console.log(result);
+        console.log("result================")
+        result.forEach(item => {
+          if(item['choices'][0]['finish_reason'] != 'stop'){
+            content += item['choices'][0]['delta']['content']
+          }
+        });
+
+      } catch (error) {
+        console.log(error)
+          console.log("解析出错=============")
+          console.log(requestData)
+          console.log("解析出错=====================")
+      }
+      // let content = JSON.parse(requestData.replace("data: ", ''))['choices'][0]['delta']['content'];
+      // console.log(content);
       let temp = that.data.content += content 
       that.setData({
         content: temp
@@ -344,7 +367,8 @@ Page({
 hexToString(hexString) {
     const hexArray = hexString.match(/.{1,2}/g);
     const byteArray = new Uint8Array(hexArray.map(byte => parseInt(byte, 16)));
-    const decodedString = new TextDecoder().decode(byteArray);
+    // const decodedString = new TextDecoder().decode(byteArray);
+    const decodedString = decodeURIComponent(escape(String.fromCharCode.apply(null, byteArray)));
     return decodedString;
   },
 

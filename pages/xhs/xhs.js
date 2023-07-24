@@ -266,7 +266,7 @@ Page({
       method: 'POST',
       header: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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'
+        'Authorization': 'Bearer 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'
       },
       data: {
         "model": "gpt-3.5-turbo",
@@ -371,11 +371,50 @@ Page({
       // let de = decodeURIComponent(escape(en));
 
       // console.log("onChunkReceived", str);
+      let content = '';
+    //   const arrayBuffer = r.data;
+    // const uint8Array = new Uint8Array(arrayBuffer);
+    // let text = String.fromCharCode.apply(null, uint8Array);
+    // console.log(r.data)
+    // console.log(typeof(r.data))
+    // let text = that.arrayBufferToString(r)
+    // try {
+    //   JSON.parse(text.replace("data: ", ''))
+    // } catch (error) {
+    //   console.log("解析出错")
+    //   console.log(text)
+    //   console.log("解析出错")
+    // }
+    // content += JSON.parse(text.replace("data: ", ''))['choices'][0]['delta']['content'];
+    // console.log(content)
 
-      console.log(r.data)
+      // console.log(r.data)
       const data16 = that.arrayBufferToHex(r.data)	// ArrayBuffer转16进制
       const requestData = that.hexToString(data16) // 16进制转字符串
-      let content = JSON.parse(requestData.replace("data: ", ''))['choices'][0]['delta']['content'];
+      try {
+        const regex = /{"id.*}]}/g;
+
+        // 匹配所有符合格式的JSON字符串并存储在数组中
+        const matches = requestData.match(regex);
+
+        // 将匹配到的JSON字符串转换为JSON对象，并存储在结果数组中
+        const result = matches.map((match) => JSON.parse(match));
+        console.log("result=============")
+        console.log(result);
+        console.log("result================")
+        result.forEach(item => {
+          if(item['choices'][0]['finish_reason'] != 'stop'){
+            content += item['choices'][0]['delta']['content']
+          }
+        });
+
+      } catch (error) {
+        console.log(error)
+          console.log("解析出错=============")
+          console.log(requestData)
+          console.log("解析出错=====================")
+      }
+      // let content = JSON.parse(requestData.replace("data: ", ''))['choices'][0]['delta']['content'];
       console.log(content);
       let temp = that.data.content += content 
       that.setData({
@@ -384,13 +423,61 @@ Page({
     });
 
     
-
+   
+  
    
 
 
 
 
   },
+
+ arrayBufferToString(arr){
+   console.log(arr)
+  if (typeof arr === 'string') {
+    return arr;
+  }
+  var dataview = new DataView(arr.data.buffer);
+  var ints = new Uint8Array(arr.data.byteLength);
+  for (var i = 0; i < ints.length; i++) {
+    ints[i] = dataview.getUint8(i);
+  }
+  arr = ints;
+  var str = '',
+    _arr = arr;
+  for (var i = 0; i < _arr.length; i++) {
+    var one = _arr[i].toString(2),
+      v = one.match(/^1+?(?=0)/);
+    if (v && one.length == 8) {
+      var bytesLength = v[0].length;
+      var store = _arr[i].toString(2).slice(7 - bytesLength);
+      for (var st = 1; st < bytesLength; st++) {
+        store += _arr[st + i].toString(2).slice(2);
+      }
+      str += String.fromCharCode(parseInt(store, 2));
+      i += bytesLength - 1;
+    } else {
+      str += String.fromCharCode(_arr[i]);
+    }
+  }
+  return str;
+},
+
+  uint8ArrayToString(uint8Array) {
+    let encodedString = '';
+  
+    for (let i = 0; i < uint8Array.length; i++) {
+      encodedString += String.fromCharCode(uint8Array[i]);
+    }
+  
+    // 解决中文乱码
+    try {
+      return decodeURIComponent(escape(encodedString));
+    } catch (e) {
+      return encodedString; // 如果解码失败，直接返回原始字符串
+    }
+  },
+
 
  arrayBufferToHex(arrayBuffer) {
     const byteArray = new Uint8Array(arrayBuffer);
@@ -407,7 +494,8 @@ Page({
 hexToString(hexString) {
     const hexArray = hexString.match(/.{1,2}/g);
     const byteArray = new Uint8Array(hexArray.map(byte => parseInt(byte, 16)));
-    const decodedString = new TextDecoder().decode(byteArray);
+    const decodedString = decodeURIComponent(escape(String.fromCharCode.apply(null, byteArray)));
+    // const decodedString = new TextDecoder().decode(byteArray);
     return decodedString;
   },
 
