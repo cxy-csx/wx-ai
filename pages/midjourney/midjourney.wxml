@@ -1,2 +1,80 @@
-<!--pages/midjourney/midjourney.wxml-->
-<text>pages/midjourney/midjourney.wxml</text>
+<!--pages/index/component/form/form.wxml-->
+<cu-custom bgColor="bg-gradual-cyan" isBack="{{true}}">
+  <view slot="content">图生成图</view>
+</cu-custom>
+
+<form>
+  
+
+  <view class="cu-bar bg-white margin-top">
+    <view class="action">
+      <text class="cuIcon-titles text-blue"></text>
+      <text class="text-bold">图生图</text>
+    </view>
+  </view>
+
+  
+
+  <!-- <view class="margin-tb margin-lr-sm">
+  <view class="cu-form-group margin-top radius-lg-top">
+    <view class="title">重新上色</view>
+    <switch class="red" checked bindchange="b1"></switch>
+  </view>
+
+  <view class="cu-form-group">
+    <view class="title">去除噪点</view>
+    <switch class="red" checked bindchange="b2"></switch>
+  </view>
+
+  <view class="cu-form-group radius-lg-bottom">
+    <view class="title">背景增强</view>
+    <switch class="red" checked bindchange="b3"></switch>
+  </view>
+</view> -->
+
+
+<view class="cu-bar bg-white margin-top-sm">
+    <view class="action">
+      图片上传
+    </view>
+    <view class="action">
+      {{imgList.length}}/1
+    </view>
+  </view>
+
+  <view class="cu-form-group">
+    <view class="grid col-4 grid-square flex-sub">
+      <view class="bg-img" wx:for="{{imgList}}" wx:key="item" bindtap="ViewImage" data-url="{{imgList[index]}}">
+        <image src='{{imgList[index]}}' mode='aspectFill'></image>
+        <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+          <text class="cuIcon-close"></text>
+        </view>
+      </view>
+      <view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<1}}">
+        <text class="cuIcon-cameraadd"></text>
+      </view>
+    </view>
+  </view>
+
+  
+
+</form>
+
+
+
+<block wx:if="true">
+
+
+  
+
+      <view class="padding-sm">
+        <view class="grid col-4 grid-square">
+          <view class="bg-img" wx:for="{{imgs}}" wx:key="item" style="background-image:url({{item}});" bindtap="ViewImage2" data-url="{{item}}"></view>
+        </view>
+      </view>
+  
+
+
+</block>
+
+

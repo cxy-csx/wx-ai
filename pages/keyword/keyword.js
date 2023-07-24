@@ -1,5 +1,6 @@
 // pages/index/component/form/form.js
 const app = getApp();
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -71,6 +72,27 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+
+     // sk值
+     db
+     .collection("config")
+     .doc("cf009cef64bb5171006d58b43387f4b5")
+     .get().then(res => {
+       console.log(res)
+       this.setData({
+         key: res['data']['sk']
+       });
+     });
+       // prompt
+       db
+       .collection("config")
+       .doc("7a67810164bb5250000a141e2d7d2938")
+       .get().then(res => {
+         console.log(res)
+         this.setData({
+           prompt: res['data']['prompt']
+         })
+       });
 
   },
 
@@ -250,11 +272,33 @@ Page({
     })
   },
   textareaAInput(e) {
-    console.log()
+    console.log(this.data.key)
+    if(e.detail.value){
+      this.setData({
+        content: ''
+      })
+    }else{
+      return;
+    }
     this.setData({
       textareaAValue: e.detail.value,
       content: ''
     })
+    
+
+    
+
+   
+
+
+
+
+  },
+
+  gen(){
+    if(!this.data.textareaAValue){
+      return;
+    }
     const that = this;
     const requestTask = wx.request({
       url: 'https://gpt.cxy-csx.top/v1/chat/completions', // 替换为您的服务器端处理 ChatGPT 的 URL
@@ -262,7 +306,7 @@ Page({
       method: 'POST',
       header: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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'
+               'Authorization': 'Bearer ' + this.data.key
       },
       data: {
         "model": "gpt-3.5-turbo",
@@ -271,12 +315,12 @@ Page({
             "role": "system",
             "content": `
             请你深度学习搜索次：
-            我需要找到` + e.detail.value + `相关的搜索词，包括核心关键词、关联关键词、高转化词和热搜词。请帮我生成这些搜索词。
+           我需要找到` + this.data.textareaAValue + `相关的搜索词，包括核心关键词、关联关键词、高转化词和热搜词。请帮我生成这些搜索词。
             `
           },
           {
             "role": "user",
-            "content": e.detail.value
+            "content": this.data.textareaAValue
           }
         ],
         "stream": true
@@ -284,7 +328,7 @@ Page({
       success: (res) => {
         // 处理每个部分响应并拼接
         if (res.data.choices && res.data.choices.length > 0) {
-          console.log(res.data.choices)
+          // console.log(res.data.choices)
           const assistantMessage = res.data.choices[0].message.content;
           this.setData({
             responseText: this.data.responseText + assistantMessage
@@ -308,10 +352,23 @@ Page({
       // let de = decodeURIComponent(escape(en));
 
       // console.log("onChunkReceived", str);
+
+      // console.log(r.data)
       let content = ''
       console.log(r.data)
       const data16 = that.arrayBufferToHex(r.data)	// ArrayBuffer转16进制
       const requestData = that.hexToString(data16) // 16进制转字符串
+      // let content = '';
+      // try {
+      //   content = JSON.parse(requestData.replace("data: ", ''))['choices'][0]['delta']['content'];
+      // } catch (error) {
+      //   console.log("==========error============")
+      //   console.log(requestData)
+      //   console.log(content);
+      //   console.log("==========error============")
+      // }
+
+
       try {
         const regex = /{"id.*}]}/g;
 
@@ -337,19 +394,12 @@ Page({
       }
       // let content = JSON.parse(requestData.replace("data: ", ''))['choices'][0]['delta']['content'];
       // console.log(content);
-      let temp = that.data.content += content 
+      let temp = that.data.content += content
       that.setData({
-        content: temp
+        content: temp,
+        textareaAValue: ''
       })
     });
-
-    
-
-   
-
-
-
-
   },
 
  arrayBufferToHex(arrayBuffer) {
@@ -367,6 +417,8 @@ Page({
 hexToString(hexString) {
     const hexArray = hexString.match(/.{1,2}/g);
     const byteArray = new Uint8Array(hexArray.map(byte => parseInt(byte, 16)));
+    // const decodedString = new TextDecoder().decode(byteArray);
+    // const decodedString = decodeURIComponent(escape(String.fromCharCode(...byteArray)));
     // const decodedString = new TextDecoder().decode(byteArray);
     const decodedString = decodeURIComponent(escape(String.fromCharCode.apply(null, byteArray)));
     return decodedString;

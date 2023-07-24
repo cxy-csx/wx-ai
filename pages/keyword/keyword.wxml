@@ -15,10 +15,14 @@
   </view>
 
   <view class="cu-form-group margin-top-sm">
-    <textarea maxlength="-1" disabled="{{modalName!=null}}" bindconfirm="textareaAInput" placeholder="请输入标题"></textarea>
+    <textarea maxlength="-1" disabled="{{modalName!=null}}" bindblur="textareaAInput" placeholder="请输入标题"></textarea>
   </view>
 
 </form>
+
+<view class="cu-bar btn-group">
+    <button class="cu-btn bg-blue shadow-blur round lg" bindtap="gen">一键生成</button>
+</view>
 
 <block wx-if="{{content}}">
 

@@ -71,6 +71,17 @@ Component({
         // icon: 'messagefill'
       },
       {
+        title: '照片修复',
+        name: 'photo',
+        color: 'orange light',
+        // icon: 'formfill'
+      },
+      {
+        title: '图生图',
+        name: 'midjourney',
+        color: 'brown light',
+      },
+      {
         title: '待开发',
         name: 'develop',
         color: 'grey light',
@@ -145,6 +156,23 @@ Component({
       return wx.navigateTo({
         url: e.currentTarget.dataset.page
       })
-    }
+    },
+    showModal(e) {
+      this.setData({
+        modalName: e.currentTarget.dataset.target
+      })
+    },
+  
+    hideModal(e) {
+      this.setData({
+        modalName: null
+      })
+    },
+  
+    NavChange(e) {
+      this.setData({
+        PageCur: e.currentTarget.dataset.cur
+      })
+    },
   }
 })

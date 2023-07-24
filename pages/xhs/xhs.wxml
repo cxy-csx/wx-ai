@@ -18,10 +18,14 @@
   </view>
 
   <view class="cu-form-group margin-top-sm">
-    <textarea maxlength="-1" disabled="{{modalName!=null}}" bindconfirm="textareaAInput" placeholder="示例: 帮我写一篇洗面奶文案"></textarea>
+    <textarea maxlength="-1" disabled="{{modalName!=null}}" 		bindblur="textareaAInput" placeholder="示例: 帮我写一篇洗面奶文案"></textarea>
   </view>
 
 </form>
+
+<view class="cu-bar btn-group">
+    <button class="cu-btn bg-red shadow-blur round lg" bindtap="gen">一键生成</button>
+</view>
 
 <block wx-if="{{content}}">
 
@@ -34,6 +38,7 @@
   <view class="cu-bar btn-group">
     <button class="cu-btn bg-orange shadow-blur round lg" bindtap="copyText">复制</button>
   </view>
+  
 </view>
   
 </block>

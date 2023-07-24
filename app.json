@@ -3,6 +3,10 @@
     "pages/index/index",
     "pages/xhs/xhs",
     "pages/keyword/keyword",
+    "pages/photo/photo",
+    "pages/about/about",
+    "pages/log/log",
+    "pages/work/work",
     "pages/midjourney/midjourney"
   ],
   "window": {
