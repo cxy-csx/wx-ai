@@ -1,0 +1,101 @@
+<!--pages/about/home/home.wxml-->
+
+<!-- <import src="/pages/template/common/copyright.wxml" /> -->
+
+<!-- 背景图 -->
+<image src='/images/bg.png' mode='widthFix' class='bg-img-new'></image>
+
+<scroll-view scroll-y class="scrollPage">
+  <view class="UCenter-bg">
+    <image src="/images/tabbar/basics_cur.png" class="png" mode="widthFix"></image>
+    <view class="text-xl text-orange text-blod">文案创作助手
+      <text class="text-df">v0.0.1</text>
+    </view>
+    <text class="margin-top-sm text-orange">By: 程序员陈师兄</text>
+    <text class="margin-top-sm text-gray">最近更新：2023/7/23</text>
+  </view>
+  <!-- <view class="margin">
+    <view class="padding-bottom flex text-center">
+      <view class="flex flex-sub flex-column text-orange">
+        <view class="text-xxl text-bold">{{modelTotal}}</view>
+        <view class="margin-top-xs">
+          <text class="cuIcon-circlefill"></text> 样式
+        </view>
+      </view>
+      <view class="flex flex-sub flex-column text-blue">
+        <view class="text-xxl text-bold">{{templateCount}}</view>
+        <view class="margin-top-xs">
+          <text class="cuIcon-newsfill"></text> 模板
+        </view>
+      </view>
+      <view class="flex flex-sub flex-column text-pink">
+        <view class="text-xxl text-bold">{{visitTotal}}</view>
+        <view class="margin-top-xs">
+          <text class="cuIcon-attentionfill"></text> 访问
+        </view>
+      </view>
+      <view class="flex flex-sub flex-column text-green">
+        <view class="text-xxl text-bold">{{usersCount}}</view>
+        <view class="margin-top-xs">
+          <text class="cuIcon-myfill"></text> 用户
+        </view>
+      </view>
+    </view>
+  </view> -->
+
+  <view class="cu-list menu card-menu sm-border margin-top margin-bottom-xl shadow radius-lg">
+    <!-- <view class="cu-item arrow" bindtap="toPage" data-url="/pages/about/about/about">
+      <view class="content">
+        <image src="/images/tabbar/basics_cur.png" class="png" mode="aspectFit"></image>
+        <text>关于小程序</text>
+      </view>
+    </view> -->
+    <view class="cu-item arrow" bindtap="toPage" data-url="/pages/log/log">
+      <view class="content">
+        <text class="cuIcon-formfill text-blue"></text>
+        <text>更新日志</text>
+      </view>
+    </view>
+    <!-- <view class="cu-item arrow" bindtap="toPage" data-url="/pages/about/appreciate/appreciate">
+      <view class="content">
+        <text class="cuIcon-wefill text-red"></text>
+        <text>致谢</text>
+      </view>
+    </view> -->
+    <view class="cu-item" bindtap="CopyText" data-link="cxy-csx">
+      <view class="content">
+        <text class="cuIcon-github text-black"></text>
+        <text>作者微信</text>
+      </view>
+      <view class="cuIcon-copy text-blue"></view>
+    </view>
+    <!-- <view class="cu-item" bindtap="CopyText" data-link="https://one.x-artspace.cn/ColorUI-GA-Docs">
+      <view class="content">
+        <text class="cuIcon-link text-green"></text>
+        <text>文档链接</text>
+      </view>
+      <view class="cuIcon-copy text-blue"></view>
+    </view> -->
+  </view>
+
+  <view class="cu-list menu card-menu sm-border margin-top-sm shadow-lg">
+    <!-- 联系作者 -->
+    <view class="cu-item">
+      <button class='cu-btn content' open-type='contact'>
+        <text class='cuIcon-service text-orange text-xl'></text>
+        <text class='text-l text-black' >联系作者</text>
+      </button>
+    </view>
+    <view class="cu-item">
+      <button class='cu-btn content' open-type='feedback'>
+        <text class='cuIcon-write text-cyan text-xl'></text>
+        <text class='text-l text-black'>意见反馈</text>
+      </button>
+    </view>
+  </view>
+  <view class="margin-top">
+    <template is="copyright"></template>
+  </view>
+
+  <view class="cu-tabbar-height"></view>
+</scroll-view>

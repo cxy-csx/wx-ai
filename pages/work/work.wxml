@@ -1,0 +1,32 @@
+<!--pages/index/plugin/waterfall/waterfall.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="content">作品</view>
+</cu-custom>
+
+<view class="cu-waterfall bg-white padding-bottom-xl">
+  <view class="flex-sub">
+    <view class="flow">
+      <view class="cu-card case no-card" wx:for="{{leftData}}" wx:key="item" bindtap="ViewImage" data-url="{{leftData[index]['image']}}" data-pos="left">
+        <view class="cu-item">
+          <view class="image">
+            <image src="{{item.image}}" mode="widthFix"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="flex-sub">
+    <view class="flow">
+      <view class="cu-card case no-card" wx:for="{{rightData}}" wx:key="item" bindtap="ViewImage" data-url="{{rightData[index]['image']}}" data-pos="right">
+        <view class="cu-item shadow">
+          <view class="image">
+            <image src="{{item.image}}" mode="widthFix"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
