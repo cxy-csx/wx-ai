@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/xhs/xhs",
-    "pages/keyword/keyword"
+    "pages/keyword/keyword",
+    "pages/midjourney/midjourney"
   ],
   "window": {
     "backgroundTextStyle": "light",

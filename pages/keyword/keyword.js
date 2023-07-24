@@ -257,12 +257,12 @@ Page({
     })
     const that = this;
     const requestTask = wx.request({
-      url: 'https://openaiproxy.cloud/v1/chat/completions', // 替换为您的服务器端处理 ChatGPT 的 URL
+      url: 'https://gpt.cxy-csx.top/v1/chat/completions', // 替换为您的服务器端处理 ChatGPT 的 URL
       enableChunked: true,
       method: 'POST',
       header: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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'
+        'Authorization': 'Bearer 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'
       },
       data: {
         "model": "gpt-3.5-turbo",

@@ -18,7 +18,7 @@
   </view>
 
   <view class="cu-form-group margin-top-sm">
-    <textarea maxlength="-1" disabled="{{modalName!=null}}" bindblur="textareaAInput" placeholder="示例: 帮我写一篇洗面奶文案"></textarea>
+    <textarea maxlength="-1" disabled="{{modalName!=null}}" bindconfirm="textareaAInput" placeholder="示例: 帮我写一篇洗面奶文案"></textarea>
   </view>
 
 </form>
