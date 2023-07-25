@@ -12,12 +12,84 @@ Page({
    * 页面的初始数据
    */
   data: {
+    ColorList: app.globalData.ColorList,
+    color: 'red',
+    canvasW: 220,
+    canvasH: 220,
+    data_list: [{
+        value: 0,
+        lineColor: 'red',
+        lineWidth: 2
+      },
+      {
+        value: 10,
+        lineColor: 'red',
+        lineWidth: 2
+      },
+      {
+        value: 20,
+        lineColor: 'red',
+        lineWidth: 2
+      },
+      {
+        value: 30,
+        lineColor: 'red',
+        lineWidth: 3
+      },
+      {
+        value: 40,
+        lineColor: 'green',
+        lineWidth: 3
+      },
+      {
+        value: 50,
+        lineColor: 'green',
+        lineWidth: 3
+      },
+      {
+        value: 60,
+        lineColor: 'green',
+        lineWidth: 3
+      },
+      {
+        value: 70,
+        lineColor: 'green',
+        lineWidth: 4
+      },
+      {
+        value: 80,
+        lineColor: '#37c0fe',
+        lineWidth: 4
+      },
+      {
+        value: 90,
+        lineColor: '#37c0fe',
+        lineWidth: 4
+      },
+      {
+        value: 100,
+        lineColor: '#37c0fe',
+        lineWidth: 4
+      },
+      {
+        value: 101,
+        lineColor: '#37c0fe',
+        lineWidth: 5
+      },
+    ],
+    // 环形进度条参数
+    circleDiam: 80, // 圆环直径
+    cententDiam: 70, // 中心圆直径
+    bgColor: '#e9e9e9',
+    curColor: 'linear-gradient(#7affaf, #7a88ff)',
+    value: 70,
     StatusBar: app.globalData.StatusBar,
     CustomBar: app.globalData.CustomBar,
     sex: "女",
     b1: true,
     b2: true,
     b3: true,
+    process: '0%',
     ischecked: undefined,
     index: null,
     picker: ['喵喵喵', '汪汪汪', '哼唧哼唧'],
@@ -26,7 +98,7 @@ Page({
       ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'],
       ['猪肉绦虫', '吸血虫']
     ],
-    imgs: ['https://cxy-csx.top/13334597216923945.jpeg', 'https://cxy-csx.top/13334597212878479.jpeg'],
+    imgs: [],
     leftData: [],
     rightData: [],
     orgData: [
@@ -157,6 +229,38 @@ Page({
   },
   onLoad(options) {
     // this.create(this.data.orgData)
+    let that = this;
+    setTimeout(function () {
+      that.setData({
+        loading: true
+      })
+    }, 500);
+    this.rotateCircle(that.data.value);
+
+    // uploadImageToCloud: function () {
+      const imageUrl = 'https://example.com/image.jpg'; // 外部图片地址，替换为你的图片链接
+  
+      // wx.cloud.callFunction({
+      //   name: 'upload',
+      //   data: {
+      //     imageUrl: "https://cdn.discordapp.com/attachments/1133239262922412074/1133282468380803172/charlesrogers__312b6cce-5e59-4a1b-be76-82d8467c2943.png"
+      //   },
+      //   success: res => {
+      //     console.log('上传成功，云存储文件 ID:', res);
+      //   },
+      //   fail: err => {
+      //     console.error('上传失败:', err);
+      //   }
+      // });
+
+    wx.downloadFile({
+      url: 'https://cdn.discordapp.com/attachments/1133239262922412074/1133282468380803172/charlesrogers__312b6cce-5e59-4a1b-be76-82d8467c2943.png',
+      success: res => {
+        console.log(res)
+      }
+    })
+
+    // }
   },
 
   /**
@@ -171,6 +275,86 @@ Page({
    */
   onShow() {
 
+  },
+  SetColor(e) {
+    this.setData({
+      color: e.currentTarget.dataset.color,
+      modalName: null
+    })
+  },
+
+  SetActive(e) {
+    this.setData({
+      active: e.detail.value
+    })
+  },
+  getRings() {
+    this.data.data_list.forEach((item, index) => {
+      this.canvasRing = this.selectComponent("#can" + index);
+      this.canvasRing.showCanvasRing()
+    })
+
+  },
+  drawNew(step) {
+    const query = wx.createSelectorQuery().in(this);
+    query.select('#myCanvas')
+      .fields({
+        node: true,
+        size: true
+      })
+      .exec(this.init.bind(this))
+  },
+  init(res) {
+    const canvas = res[0].node
+    const ctx = canvas.getContext('2d');
+    const dpr = wx.getSystemInfoSync().pixelRatio
+    canvas.width = res[0].width * dpr
+    canvas.height = res[0].height * dpr
+    ctx.scale(dpr, dpr)
+    var gradient = ctx.createLinearGradient(200, 100, 100, 200);
+    gradient.addColorStop("0", "#a57b5f");
+    gradient.addColorStop("0.5", "#cc9ad1");
+    gradient.addColorStop("1.0", "#b84e88");
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(110, 110, 100, 0, 2 * Math.PI, false);
+    ctx.stroke();
+  },
+  // 环形进度条
+  rotateCircle(value) {
+    let rotateLeft = '';
+    let rotateRight = '';
+    let backgroundRight = '';
+    let durationLeft = '0s';
+    let durationRight = '0s';
+
+    if (value >= 50) {
+      rotateLeft = `rotate(${((value - 50) / 100) * 360}deg)`;
+      rotateRight = `rotate(0deg)`;
+      backgroundRight = 'inherit';
+      durationLeft = '0.25s';
+      durationRight = '0s';
+    } else {
+      rotateLeft = 'rotate(0deg)';
+      rotateRight = `rotate(${(value / 100) * 360}deg)`;
+      backgroundRight = this.data.bgColor;
+      durationLeft = '0';
+      durationRight = '0.25s';
+      if (this.oldValue >= 50) {
+        durationRight = '0s';
+      }
+    }
+    // 记录上次的值
+    this.oldValue = value;
+    this.setData({
+      rotateLeft,
+      rotateRight,
+      backgroundRight,
+      durationLeft,
+      durationRight
+    });
   },
 
   /**
@@ -314,45 +498,13 @@ Page({
             console.log(res)
           }
         })
-        // wx.showLoading({
-        //   title: '等待任务队列执行...',
-        // })
 
-        wx.getFileSystemManager().readFile({
-          filePath: res.tempFilePaths[0],
-          encoding: 'base64',
-          success: res => {
-            let base64 = 'data:image/jpeg;base64,' + res.data;
-            wx.request({
-              url: 'https://mj.cxy-csx.top/mj/submit/imagine',
-              method: 'POST',
-              header: {
-                'content-type': 'application/json',
-              },
-              data: {
-                'base64': base64,
-                'notifyHook': '',
-                'prompt': '阳关积极',
-                'state': '',
-              },
-              success: (res => {
+        this.setData({
+          tempUrl: res.tempFilePaths[0]
+        })
+        
 
-                wx.showToast({
-                  title: '等待执行...',
-                })
 
-                console.log(res);
-                console.log(res.data.result);
-    
-                var resp = this.getUrl(res.data.result, this.callback)
-                
-              })
-              
-          
-    
-            })
-           }
-          })
 
         
 
@@ -463,7 +615,56 @@ Page({
     });
   },
 
+  gen(e){
+    wx.showLoading({
+          title: '等待任务队列执行...',
+        })
+    console.log(this.data.tempUrl)
+    wx.getFileSystemManager().readFile({
+      filePath: this.data.tempUrl,
+      encoding: 'base64',
+      success: res => {
+        let base64 = 'data:image/jpeg;base64,' + res.data;
+        wx.request({
+          url: 'https://mj.cxy-csx.top/mj/submit/imagine',
+          method: 'POST',
+          header: {
+            'content-type': 'application/json',
+          },
+          data: {
+            'base64': base64,
+            'notifyHook': '',
+            'prompt': this.data.textareaAValue,
+            'state': '',
+          },
+          success: (res => {
+
+            wx.showToast({
+              title: '等待执行...',
+            })
+
+            console.log(res);
+            console.log(res.data.result);
+
+            this.getUrl(res.data.result, this.callback)
+            
+          })
+          
+      
+
+        })
+       }
+      })
+    
+  },
+
 callback(res){
+  this.setData({
+    process: res.progress
+  })
+  console.log("2222222222222222222")
+  console.log(res)
+  console.log("2222222222222222222")
   if(res.progress != '100%'){
     this.getUrl(res.id, this.callback)
   } else {
@@ -552,20 +753,22 @@ handel(res){
     console.log(res.data.imageUrl)
     console.log(imgs)
     imgs.push(res.data.imageUrl);
-    if(leftData.length %2 == 0){
-      leftData.push({
-        image: res.data.imageUrl
-      });
-    }else{
-      rightData.push({
-        image: res.data.imageUrl
-      });
-    }
-    // let pos = orgData.indexOf(res.data.imageUrl)
-    // if (pos < 0){
-      
-    // }
-    console.log(imgs)
+    // wx.cloud.uploadFile({
+    //   cloudPath: 'imgs', // 云存储保存路径
+    //   filePath: res.data.imageUrl, // 图片临时路径
+    //   success: res => {
+    //     console.log("7777777777777777777")
+    //     console.log(res)
+    //     console.log("7777777777777777777")
+    //     
+    //     console.log(imgs)
+        
+    //   },
+    //   fail: res => {
+    //     console.log(res)
+    //   }
+    // })
+
     this.setData({
       imgs: imgs,
       // orgData: orgData
@@ -574,6 +777,21 @@ handel(res){
     console.log("11111111111111111111")
     console.log(this)
     console.log("11111111111111111111")
+    
+    // if(leftData.length %2 == 0){
+    //   leftData.push({
+    //     image: res.data.imageUrl
+    //   });
+    // }else{
+    //   rightData.push({
+    //     image: res.data.imageUrl
+    //   });
+    // }
+    // let pos = orgData.indexOf(res.data.imageUrl)
+    // if (pos < 0){
+      
+    // }
+    
   }
   
   // if(!res.imageUrl){

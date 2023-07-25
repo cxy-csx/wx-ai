@@ -55,26 +55,53 @@
       </view>
     </view>
   </view>
-
-  
-
 </form>
 
+<view class="cu-bar bg-white margin-top">
+    <view class="action">
+      <text class="cuIcon-titles text-blue"></text>
+      <text class="text-bold">图片风格</text>
+    </view>
+  </view>
 
+  <!-- !!!!! placeholder 在ios表现有偏移 建议使用 第一种样式 -->
+  <view class="cu-form-group margin-top-sm">
+    <textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaAInput" placeholder="描述一下生成的图片风格"></textarea>
+  </view>
 
-<block wx:if="true">
+  <view class="cu-bar btn-group">
+    <button class="cu-btn bg-blue shadow-blur round lg" bindtap="gen">提交任务</button>
+</view>
 
+<block wx:if="{{process}}">
+  <view class="cu-bar bg-white solid-bottom margin-top">
+  <view class="action">
+    <text class="cuIcon-titles text-blue"></text>处理进度
+  </view>
+</view>
 
-  
-
-      <view class="padding-sm">
-        <view class="grid col-4 grid-square">
-          <view class="bg-img" wx:for="{{imgs}}" wx:key="item" style="background-image:url({{item}});" bindtap="ViewImage2" data-url="{{item}}"></view>
-        </view>
-      </view>
-  
-
-
+<view class="padding margin-sm bg-white radius-lg">
+  <view class="cu-progress round sm striped {{active?'active':''}}">
+    <view class="bg-green" style="width:{{loading? process :''}};">{{process}}</view>
+  </view>
+</view>
 </block>
+
+
+
+
+
+
+  
+
+  <view class="padding-sm">
+    <view class="grid col-4 grid-square">
+      <view class="bg-img" wx:for="{{imgs}}" wx:key="item" style="background-image:url({{item}});" bindtap="ViewImage2" data-url="{{item}}"></view>
+    </view>
+  </view>
+  
+
+
+
 
 

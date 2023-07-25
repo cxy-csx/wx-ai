@@ -270,13 +270,17 @@ Page({
       }
     })
   },
-
+  sleep(milliSeconds) {
+    var startTime = new Date().getTime();
+    while (new Date().getTime() < startTime + milliSeconds);
+  },
   gen(e){
 
     console.log(this.data.textareaAValue)
 
     if(!this.data.textareaAValue){
       return;
+      // this.gen(e)
     }
     
     const that = this;
