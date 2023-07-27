@@ -20,7 +20,7 @@
       </view>
     </view>
   </block>
-  <view class="margin-top">
+  <!-- <view class="margin-top">
     <template is="copyright"></template>
-  </view>
+  </view> -->
 </view>

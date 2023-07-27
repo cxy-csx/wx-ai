@@ -98,7 +98,7 @@ Page({
       ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'],
       ['猪肉绦虫', '吸血虫']
     ],
-    imgs: ['cloud://dev-8gcnkqqr1adb949a.6465-dev-8gcnkqqr1adb949a-1317235824/images/1690291908444.jpg'],
+    imgs: [],
     leftData: [],
     rightData: [],
     orgData: [
@@ -640,6 +640,13 @@ Page({
   },
 
   gen(e){
+    console.log(this.data.textareaAValue)
+    if(!this.data.textareaAValue || !this.data.tempUrl){
+      wx.showToast({
+        title: '描述/图片必填',
+      })
+      return;
+    }
     wx.showLoading({
           title: '等待任务队列执行...',
         })
@@ -667,6 +674,10 @@ Page({
               title: '等待执行...',
             })
 
+            this.setData({
+              taskId: res.data.result
+            })
+
             console.log(res);
             console.log(res.data.result);
 
@@ -686,9 +697,9 @@ callback(res){
   this.setData({
     process: res.progress
   })
-  console.log("2222222222222222222")
-  console.log(res)
-  console.log("2222222222222222222")
+  // console.log("2222222222222222222")
+  // console.log(res)
+  // console.log("2222222222222222222")
   if(res.progress != '100%'){
     this.getUrl(res.id, this.callback)
   } else {
@@ -855,6 +866,54 @@ handel(res){
   // }
 },
 
+
+watch(e){
+  this.setData({
+    modalName: e.currentTarget.dataset.target
+  })
+  console.log(e)
+  console.log(this.data.taskId)
+    wx.request({
+      url: `https://mj.cxy-csx.top/mj/task/${this.data.taskId}/fetch`,
+      success: (res => {
+        console.log(res)
+        this.setData({
+          taskId: res.data.id,
+          status: res.data.status == 'IN_PROGRESS' ? '正在执行...': '等待中...',
+          progress2: res.data.progress
+        })
+        
+
+      })
+    })
+  
+
+},
+
+
+watch2(e){
+  this.setData({
+    modalName: e.currentTarget.dataset.target
+  })
+  wx.request({
+    url: 'https://mj.cxy-csx.top/mj/task/queue',
+    success: res=>{
+      console.log(res)
+      this.setData({
+        queue: res.data
+      })
+    }
+  })
+},
+
+// showModal(e) {
+  
+// },
+hideModal(e) {
+  this.setData({
+    modalName: null
+  })
+},
 
 
 getUrl(taskId, callback){
