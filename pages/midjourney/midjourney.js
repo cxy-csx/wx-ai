@@ -6,6 +6,8 @@ let leftData = [];
 let rightData = [];
 let loading = true;
 let loadingTop = true;
+let userInfo = app.globalData.userInfo;
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -229,6 +231,8 @@ Page({
   },
   onLoad(options) {
 
+
+
     // wx.cloud.callFunction({
     //   name: 'upload',
     //   data: {
@@ -285,6 +289,23 @@ Page({
     // })
 
     // }
+  },
+
+
+  getPic(e){
+    console.log(e)
+    console.log(app.globalData.userInfo.openid)
+    db.collection("imgs").where({
+        _openid: app.globalData.userInfo.openid
+    }).get().then(res => {
+        // 跳转到列表页面
+        console.log(res);
+        wx.navigateTo({
+          url: "../work/work?imgs=" + JSON.stringify(res.data)
+        })
+        
+    });
+
   },
 
   /**
@@ -780,6 +801,13 @@ handel(res){
   if(res.data.progress != '100%'){
     this.getImgUrl(res.data.id, this.handel)
   } else {
+    // wx.showModal({
+    //   title: '生成成功',
+    //   content: '正在下载...',
+    // })
+    this.setData({
+      modalName: 'Image'
+    })
     console.log("获取到图片")
     console.log(res)
     let imgs = this.data.imgs;
@@ -811,6 +839,22 @@ handel(res){
           imgs: imgs,
           // orgData: orgData
         })
+
+         // 存储到数据库
+         db.collection("imgs").add({
+          data: {
+              fileId: res.result,
+              content: res.fileList[0].tempFileURL
+          },
+          success(res){
+              console.log("添加数据成功",res)
+          },
+          fail(res){
+              console.log("添加数据失败",res)
+          }
+      })
+
+
           },
           fail: err => {
             console.error(err);
@@ -864,6 +908,17 @@ handel(res){
   // } else {
     
   // }
+},
+
+showModal(e) {
+  this.setData({
+    modalName: e.currentTarget.dataset.target
+  })
+},
+hideModal(e) {
+  this.setData({
+    modalName: null
+  })
 },
 
 

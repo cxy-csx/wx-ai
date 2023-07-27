@@ -1,7 +1,7 @@
 // pages/index/component/form/form.js
 const app = getApp();
 const db = wx.cloud.database();
-const log = require('../../log.js')
+const log = require('../../log')
 Page({
 
   /**

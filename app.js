@@ -19,6 +19,17 @@ App({
       }
     })
     this.updateManager()
+    var that = this;
+    wx.cloud.callFunction({
+      name:'getUserInfo',//上一步上传云函数的名字
+      success(res) {
+        console.log(this)
+        that.globalData.userInfo = res.result
+        console.log(res.result) 
+        console.log(res.result.openid)
+      }
+    })
+    
   },
   /**
    * 小程序主动更新

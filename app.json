@@ -19,17 +19,20 @@
   "tabBar": {
     "color": "#8a8a8a",
     "selectedColor": "#1296db",
-    "list": [{
-      "pagePath": "pages/index/index",
-      "text": "创作",
-      "iconPath": "images/tabbar/create.png",
-      "selectedIconPath": "images/tabbar/create_cur.png"
-    }, {
-      "pagePath": "pages/about/about",
-      "text": "我的",
-      "iconPath": "images/tabbar/my.png",
-      "selectedIconPath": "images/tabbar/my_cur.png"
-    }]
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "创作",
+        "iconPath": "images/tabbar/create.png",
+        "selectedIconPath": "images/tabbar/create_cur.png"
+      },
+      {
+        "pagePath": "pages/about/about",
+        "text": "我的",
+        "iconPath": "images/tabbar/my.png",
+        "selectedIconPath": "images/tabbar/my_cur.png"
+      }
+    ]
   },
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom/cu-custom"

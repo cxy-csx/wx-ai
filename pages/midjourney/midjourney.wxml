@@ -81,6 +81,15 @@
     <button class="cu-btn bg-cyan shadow-blur round lg" bindtap="watch2" data-target="Modal2">所有任务</button>
 </view>
 
+<!-- <navigator open-type="navigate" hover-class='none' url="/pages/work/work"> -->
+  <view class="cu-bar btn-group">
+    <button class="cu-btn bg-cyan shadow-blur round lg" bindtap="getPic">作图记录</button>
+  </view>
+<!-- </navigator> -->
+
+
+
+
 <block wx:if="{{process}}">
   <view class="cu-bar bg-white solid-bottom margin-top">
   <view class="action">
@@ -94,6 +103,29 @@
   </view>
 </view>
 </block>
+
+
+
+<!-- <view class="bg-white padding-tb">
+  <view class="cu-bar btn-group">
+    <button class="cu-btn round text-green line-blue shadow" bindtap="showModal" data-target="Image" style="height: 84rpx;"><text class="text-lg">演示</text></button>
+  </view>
+</view> -->
+
+<view class="cu-modal {{modalName=='Image'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="bg-img" style="background-image: url('https://image.meiye.art/FhHGe9NyO0uddb6D4203jevC_gzc?imageMogr2/thumbnail/450x/interlace/1');height: 360rpx;">
+      <view class="cu-bar justify-end text-white">
+        <view class="action" bindtap="hideModal">
+          <text class="cuIcon-close "></text>
+        </view>
+      </view>
+    </view>
+    <view class="cu-bar bg-white">
+      <view class="action margin-0 flex-sub  solid-left" bindtap="hideModal">图片正在下载...</view>
+    </view>
+  </view>
+</view>
 
 
 
