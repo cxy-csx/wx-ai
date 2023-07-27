@@ -14,6 +14,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    picker: ['喵喵喵', '汪汪汪', '哼唧哼唧'],
     ColorList: app.globalData.ColorList,
     color: 'red',
     canvasW: 220,
@@ -297,7 +298,11 @@ Page({
     console.log(app.globalData.userInfo.openid)
     db.collection("imgs").where({
         _openid: app.globalData.userInfo.openid
-    }).get().then(res => {
+    }).orderBy('create_time', 'desc')
+    .limit(12)
+    .get()
+    
+    .then(res => {
         // 跳转到列表页面
         console.log(res);
         wx.navigateTo({
@@ -805,82 +810,92 @@ handel(res){
     //   title: '生成成功',
     //   content: '正在下载...',
     // })
-    this.setData({
-      modalName: 'Image'
-    })
+    // this.setData({
+    //   modalName: 'Image'
+    // })
     console.log("获取到图片")
     console.log(res)
     let imgs = this.data.imgs;
     let leftData = this.data.leftData;
     let rightData = this.data.rightData;
     console.log(res.data.imageUrl)
-    let newUrl = res.data.imageUrl.replace("https://cdn.discordapp.com/", 'http://www.jxit114.xyz:8082/cdndiscordapp/')
+    let newUrl = res.data.imageUrl.replace("https://cdn.discordapp.com/", 'https://img.cxy-csx.top/')
     console.log(newUrl)
 
-    console.log(imgs)
-    wx.cloud.callFunction({
-      name: 'upload',
-      data: {
-        imageUrl: newUrl
-      },
-      success: res => {
+    imgs.push(newUrl);
+    this.setData({
+      imgs: imgs,
+      process: '0%'
+      // orgData: orgData
+    })
 
-        console.log('上传成功，云存储文件 ID:', res.result);
-        console.log(res)
-        console.log('上传成功，云存储文件 ID:', res.result);
+    // 存储到数据库
+    db.collection("imgs").add({
+    data: {
+        content: newUrl,
+        create_time: new Date()
+    },
+    success(res){
+        console.log("添加数据成功",res)
+    },
+    fail(res){
+        console.log("添加数据失败",res)
+    }
+  })
 
-        wx.cloud.getTempFileURL({
-          fileList: [res.result], // 传入文件 ID 数组
-          success: res => {
-            console.log(res.fileList[0].tempFileURL); // 返回的结果包含文件的 HTTP 链接
-            // 在这里处理文件链接
-            imgs.push(res.fileList[0].tempFileURL);
-        this.setData({
-          imgs: imgs,
-          // orgData: orgData
-        })
+    // console.log(imgs)
+    // wx.cloud.callFunction({
+    //   name: 'upload',
+    //   data: {
+    //     imageUrl: newUrl
+    //   },
+    //   success: res => {
 
-         // 存储到数据库
-         db.collection("imgs").add({
-          data: {
-              fileId: res.result,
-              content: res.fileList[0].tempFileURL
-          },
-          success(res){
-              console.log("添加数据成功",res)
-          },
-          fail(res){
-              console.log("添加数据失败",res)
-          }
-      })
+    //     console.log('上传成功，云存储文件 ID:', res.result);
+    //     console.log(res)
+    //     console.log('上传成功，云存储文件 ID:', res.result);
 
+    //     wx.cloud.getTempFileURL({
+    //       fileList: [res.result], // 传入文件 ID 数组
+    //       success: res => {
+    //         console.log(res.fileList[0].tempFileURL); // 返回的结果包含文件的 HTTP 链接
+    //         // 在这里处理文件链接
+    //         imgs.push(res.fileList[0].tempFileURL);
+    //     this.setData({
+    //       imgs: imgs,
+    //       // orgData: orgData
+    //     })
 
-          },
-          fail: err => {
-            console.error(err);
-          }
-        });
+    
+    //   })
 
 
-        // wx.cloud.getTempFileURL({
-        //     fileList: [res.result], // 传入文件 ID 数组
-        //     success: res => {
-        //       console.log(res.fileList[0]); // 返回的结果包含文件的 HTTP 链接
-        //       // 在这里处理文件链接
-        //     },
-        //     fail: err => {
-        //       console.error(err);
-        //     }
-        //   });
+    //       },
+    //       fail: err => {
+    //         console.error(err);
+    //       }
+    //     });
+
+
+    //     // wx.cloud.getTempFileURL({
+    //     //     fileList: [res.result], // 传入文件 ID 数组
+    //     //     success: res => {
+    //     //       console.log(res.fileList[0]); // 返回的结果包含文件的 HTTP 链接
+    //     //       // 在这里处理文件链接
+    //     //     },
+    //     //     fail: err => {
+    //     //       console.error(err);
+    //     //     }
+    //     //   });
 
 
 
         
-      },
-      fail: err => {
-        console.error('上传失败:', err);
-      }
-    });
+    //   },
+    //   fail: err => {
+    //     console.error('上传失败:', err);
+    //   }
+    // });
     
     // this.create(orgData)
     console.log("11111111111111111111")

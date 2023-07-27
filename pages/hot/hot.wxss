@@ -1,0 +1,5 @@
+/* pages/hot/hot.wxss */
+.table-th {
+  font-size: 10px;
+  overflow: hidden;
+}

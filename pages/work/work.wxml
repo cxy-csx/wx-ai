@@ -3,6 +3,12 @@
   <view slot="content">作品</view>
 </cu-custom>
 
+<view class="cu-bar bg-white solid-bottom">
+  <view class="action">
+    <text class="cuIcon-titles text-blue"></text> 作品 (只保留最近3次作图)
+  </view>
+</view>
+
 <view class="cu-waterfall bg-white padding-bottom-xl">
   <view class="flex-sub">
     <view class="flow">

@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14265d3a-5329-4cae-a92b-241ca7b812c6" name="Changes" comment="log日志">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023_7_24_19_26__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023_7_24_19_26__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/midjourney/midjourney.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/midjourney/midjourney.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/midjourney/midjourney.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/midjourney/midjourney.wxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/work/work.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/work/work.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/work/work.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/work/work.wxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/xhs/xhs.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/xhs/xhs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.private.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/project.private.config.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +77,7 @@
       <option name="presentableId" value="Default" />
       <updated>1690248257517</updated>
       <workItem from="1690248258776" duration="3023000" />
-      <workItem from="1690420072455" duration="783000" />
+      <workItem from="1690420072455" duration="1982000" />
     </task>
     <task id="LOCAL-00001" summary="log日志">
       <created>1690420250606</created>

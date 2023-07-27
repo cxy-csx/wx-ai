@@ -7,7 +7,8 @@
     "pages/about/about",
     "pages/log/log",
     "pages/work/work",
-    "pages/midjourney/midjourney"
+    "pages/midjourney/midjourney",
+    "pages/hot/hot"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -25,6 +26,12 @@
         "text": "创作",
         "iconPath": "images/tabbar/create.png",
         "selectedIconPath": "images/tabbar/create_cur.png"
+      },
+      {
+        "pagePath": "pages/hot/hot",
+        "text": "热榜",
+        "iconPath": "images/tabbar/hot.png",
+        "selectedIconPath": "images/tabbar/hot_cur.png"
       },
       {
         "pagePath": "pages/about/about",
