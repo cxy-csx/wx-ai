@@ -228,6 +228,41 @@ Page({
     });
   },
   onLoad(options) {
+
+    // wx.cloud.callFunction({
+    //   name: 'upload',
+    //   data: {
+    //     imageUrl: 'https://6465-dev-8gcnkqqr1adb949a-1317235824.tcb.qcloud.la/images/1690291908444.jpg'
+    //   },
+    //   success: res => {
+
+    //     console.log('上传成功，云存储文件 ID:', res.result);
+    //     console.log(res)
+    //     console.log('上传成功，云存储文件 ID:', res.result);
+    //     // imgs.push(res.result);
+    //     // this.setData({
+    //     //   imgs: imgs,
+    //     //   // orgData: orgData
+    //     // })
+    //   },
+    //   fail: err => {
+    //     console.error('上传失败:', err);
+    //   }
+    // });
+
+    // wx.cloud.getTempFileURL({
+    //   fileList: ['cloud://dev-8gcnkqqr1adb949a.6465-dev-8gcnkqqr1adb949a-1317235824/images/1690291908444.jpg'], // 传入文件 ID 数组
+    //   success: res => {
+    //     console.log(res.fileList[0].tempFileURL); // 返回的结果包含文件的 HTTP 链接
+    //     // 在这里处理文件链接
+    //   },
+    //   fail: err => {
+    //     console.error(err);
+    //   }
+    // });
+
+
+
     // this.create(this.data.orgData)
     let that = this;
     setTimeout(function () {
@@ -238,27 +273,16 @@ Page({
     this.rotateCircle(that.data.value);
 
     // uploadImageToCloud: function () {
-      const imageUrl = 'https://example.com/image.jpg'; // 外部图片地址，替换为你的图片链接
+      // const imageUrl = 'https://example.com/image.jpg'; // 外部图片地址，替换为你的图片链接
   
-      // wx.cloud.callFunction({
-      //   name: 'upload',
-      //   data: {
-      //     imageUrl: "https://cdn.discordapp.com/attachments/1133239262922412074/1133282468380803172/charlesrogers__312b6cce-5e59-4a1b-be76-82d8467c2943.png"
-      //   },
-      //   success: res => {
-      //     console.log('上传成功，云存储文件 ID:', res);
-      //   },
-      //   fail: err => {
-      //     console.error('上传失败:', err);
-      //   }
-      // });
+      
 
-    wx.downloadFile({
-      url: 'https://cdn.discordapp.com/attachments/1133239262922412074/1133282468380803172/charlesrogers__312b6cce-5e59-4a1b-be76-82d8467c2943.png',
-      success: res => {
-        console.log(res)
-      }
-    })
+    // wx.downloadFile({
+    //   url: 'https://cdn.discordapp.com/attachments/1133239262922412074/1133282468380803172/charlesrogers__312b6cce-5e59-4a1b-be76-82d8467c2943.png',
+    //   success: res => {
+    //     console.log(res)
+    //   }
+    // })
 
     // }
   },
@@ -616,6 +640,13 @@ Page({
   },
 
   gen(e){
+    console.log(this.data.textareaAValue)
+    if(!this.data.textareaAValue || !this.data.tempUrl){
+      wx.showToast({
+        title: '描述/图片必填',
+      })
+      return;
+    }
     wx.showLoading({
           title: '等待任务队列执行...',
         })
@@ -643,6 +674,10 @@ Page({
               title: '等待执行...',
             })
 
+            this.setData({
+              taskId: res.data.result
+            })
+
             console.log(res);
             console.log(res.data.result);
 
@@ -662,9 +697,9 @@ callback(res){
   this.setData({
     process: res.progress
   })
-  console.log("2222222222222222222")
-  console.log(res)
-  console.log("2222222222222222222")
+  // console.log("2222222222222222222")
+  // console.log(res)
+  // console.log("2222222222222222222")
   if(res.progress != '100%'){
     this.getUrl(res.id, this.callback)
   } else {
@@ -751,28 +786,58 @@ handel(res){
     let leftData = this.data.leftData;
     let rightData = this.data.rightData;
     console.log(res.data.imageUrl)
-    console.log(imgs)
-    imgs.push(res.data.imageUrl);
-    // wx.cloud.uploadFile({
-    //   cloudPath: 'imgs', // 云存储保存路径
-    //   filePath: res.data.imageUrl, // 图片临时路径
-    //   success: res => {
-    //     console.log("7777777777777777777")
-    //     console.log(res)
-    //     console.log("7777777777777777777")
-    //     
-    //     console.log(imgs)
-        
-    //   },
-    //   fail: res => {
-    //     console.log(res)
-    //   }
-    // })
+    let newUrl = res.data.imageUrl.replace("https://cdn.discordapp.com/", 'http://www.jxit114.xyz:8082/cdndiscordapp/')
+    console.log(newUrl)
 
-    this.setData({
-      imgs: imgs,
-      // orgData: orgData
-    })
+    console.log(imgs)
+    wx.cloud.callFunction({
+      name: 'upload',
+      data: {
+        imageUrl: newUrl
+      },
+      success: res => {
+
+        console.log('上传成功，云存储文件 ID:', res.result);
+        console.log(res)
+        console.log('上传成功，云存储文件 ID:', res.result);
+
+        wx.cloud.getTempFileURL({
+          fileList: [res.result], // 传入文件 ID 数组
+          success: res => {
+            console.log(res.fileList[0].tempFileURL); // 返回的结果包含文件的 HTTP 链接
+            // 在这里处理文件链接
+            imgs.push(res.fileList[0].tempFileURL);
+        this.setData({
+          imgs: imgs,
+          // orgData: orgData
+        })
+          },
+          fail: err => {
+            console.error(err);
+          }
+        });
+
+
+        // wx.cloud.getTempFileURL({
+        //     fileList: [res.result], // 传入文件 ID 数组
+        //     success: res => {
+        //       console.log(res.fileList[0]); // 返回的结果包含文件的 HTTP 链接
+        //       // 在这里处理文件链接
+        //     },
+        //     fail: err => {
+        //       console.error(err);
+        //     }
+        //   });
+
+
+
+        
+      },
+      fail: err => {
+        console.error('上传失败:', err);
+      }
+    });
+    
     // this.create(orgData)
     console.log("11111111111111111111")
     console.log(this)
@@ -801,6 +866,54 @@ handel(res){
   // }
 },
 
+
+watch(e){
+  this.setData({
+    modalName: e.currentTarget.dataset.target
+  })
+  console.log(e)
+  console.log(this.data.taskId)
+    wx.request({
+      url: `https://mj.cxy-csx.top/mj/task/${this.data.taskId}/fetch`,
+      success: (res => {
+        console.log(res)
+        this.setData({
+          taskId: res.data.id,
+          status: res.data.status == 'IN_PROGRESS' ? '正在执行...': '等待中...',
+          progress2: res.data.progress
+        })
+        
+
+      })
+    })
+  
+
+},
+
+
+watch2(e){
+  this.setData({
+    modalName: e.currentTarget.dataset.target
+  })
+  wx.request({
+    url: 'https://mj.cxy-csx.top/mj/task/queue',
+    success: res=>{
+      console.log(res)
+      this.setData({
+        queue: res.data
+      })
+    }
+  })
+},
+
+// showModal(e) {
+  
+// },
+hideModal(e) {
+  this.setData({
+    modalName: null
+  })
+},
 
 
 getUrl(taskId, callback){

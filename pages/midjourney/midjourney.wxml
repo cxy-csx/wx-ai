@@ -73,10 +73,18 @@
     <button class="cu-btn bg-blue shadow-blur round lg" bindtap="gen">提交任务</button>
 </view>
 
+<view class="cu-bar btn-group">
+    <button class="cu-btn bg-green shadow-blur round lg" bindtap="watch" data-target="Modal">查看任务</button>
+</view>
+
+<view class="cu-bar btn-group">
+    <button class="cu-btn bg-cyan shadow-blur round lg" bindtap="watch2" data-target="Modal2">所有任务</button>
+</view>
+
 <block wx:if="{{process}}">
   <view class="cu-bar bg-white solid-bottom margin-top">
   <view class="action">
-    <text class="cuIcon-titles text-blue"></text>处理进度
+    <text class="cuIcon-titles text-blue"></text>处理进度（1~3分钟）
   </view>
 </view>
 
@@ -95,13 +103,54 @@
   
 
   <view class="padding-sm">
-    <view class="grid col-4 grid-square">
+    <view class="grid col-2 grid-square">
       <view class="bg-img" wx:for="{{imgs}}" wx:key="item" style="background-image:url({{item}});" bindtap="ViewImage2" data-url="{{item}}"></view>
     </view>
   </view>
   
 
 
+  <!-- <view class="bg-white padding-tb">
+  <view class="cu-bar btn-group">
+    <button class="cu-btn round text-green line-blue shadow" bindtap='showModal' data-target="Modal" style="height: 84rpx;"><text class="text-lg">演示</text></button>
+  </view>
+</view> -->
+
+  <view class="cu-modal {{modalName=='Modal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">执行状态</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <text>
+        任务ID: {{taskId}}\n
+        状态: {{status}}\n
+        处理进度: {{progress2}}
+      </text>
+      
+    </view>
+  </view>
+</view>
 
 
+<view class="cu-modal {{modalName=='Modal2'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">等待队列</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl" wx:for="{{queue}}" wx:key="item">
+      <text>
+        任务ID: {{item.id}}\n
+        状态: {{item.status}}\n
+        处理进度: {{item.progress}}
+      </text>
+    </view>
+  </view>
+</view>
 

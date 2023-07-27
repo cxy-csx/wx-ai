@@ -1,6 +1,7 @@
 // pages/index/component/form/form.js
 const app = getApp();
 const db = wx.cloud.database();
+const log = require('../../log.js')
 Page({
 
   /**
@@ -72,6 +73,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    console.log(log)
     // sk值
     db
     .collection("config")
@@ -275,8 +277,13 @@ Page({
     while (new Date().getTime() < startTime + milliSeconds);
   },
   gen(e){
+    
 
-    console.log(this.data.textareaAValue)
+    try {
+
+      //  x = 1/0;
+
+      console.log(this.data.textareaAValue)
 
     if(!this.data.textareaAValue){
       return;
@@ -402,6 +409,14 @@ Page({
         textareaAValue: ''
       })
     });
+      
+    } catch (error) {
+      console.log('error')
+      console.error(error)
+      console.log('error')
+    }
+
+    
   },
 
 
